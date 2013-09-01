@@ -20,6 +20,9 @@ The first step is to combine the user data between SNS and Q&A system
 == Development Log ==
 
 === 2013.8.31 ===
+* change some file to integer
+    * number of marks
+=== 2013.8.31 ===
 * refresh the question item
     * add the category into the question_loader
 
