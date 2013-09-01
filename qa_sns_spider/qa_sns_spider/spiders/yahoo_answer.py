@@ -64,7 +64,7 @@ class YahooSpider(CrawlSpider):
             ]))))
 
 # interestin marks
-        question_loader.add_xpath('number_of_interesting_marks',''.join([
+        question_loader.add_xpath('number_of_interesting_marks', ''.join([
             '//ul[@id="yan-question-tools"]',
             '//li[@id="yan-starthis"]',
             '//span[contains(@class,"star-count")]/text()'
@@ -115,20 +115,21 @@ class YahooSpider(CrawlSpider):
             './/div[@class="qa-container"]//ul[@class="meta"]',
             '/li[1]/abbr/@title'
             ]))
-        answer_loader.add_xpath('number_of_good_marks',''.join([
+        answer_loader.add_xpath('marks',''.join([
             './/div[@class="utils-container"]',
             '//li[@class="rate-up"]',
             '//span[@class="seo-rated"]/text()'
             ]))
-        answer_loader.add_xpath('number_of_good_marks',''.join([
+        answer_loader.add_xpath('marks',''.join([
             './/div[@class="utils-container"]',
             '//li[@class="rate-up"]',
             '//span[@class="seo-rated"]//strong/text()'
             ]))
 # get the good number ot bad number
-        marks = answer_loader.get_output_value('number_of_good_marks')
+        marks = answer_loader.get_output_value('marks')
+        print marks
         if marks.find('good'):
-            answer_loader.replace_value('number_of_good_marks', marks.split(' ')[0])
+            answer_loader.add_value('number_of_good_marks', marks.split(' ')[0])
 #bad numbers
 # is best answer
         answer_class = selector.select('./@class').extract()[0]

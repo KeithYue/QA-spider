@@ -4,7 +4,7 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 from scrapy.item import Item, Field
-from scrapy.contrib.loader.processor import MapCompose, Join, TakeFirst
+from scrapy.contrib.loader.processor import MapCompose, Join, TakeFirst, Compose
 from scrapy.utils.markup import remove_entities
 
 # filter the category, cleaning the home and all categories
@@ -21,6 +21,11 @@ def add_yahoo_baseurl(x):
         x
         ])
 
+def get_number_from_string(x):
+    if x.strip(' ()') == '':
+        return 0
+    else:
+        return int(x.strip(' '))
 
 
 class YahooUser(Item):
@@ -50,8 +55,12 @@ class YahooAnswer(Item):
             output_processor = TakeFirst()
             ) # 0 or 1
     rating_by_the_asker = Field()
-    number_of_good_marks = Field(
+#help fields
+    marks = Field(
             output_processor = Join()
+            )
+    number_of_good_marks = Field(
+            output_processor = Compose(Join(),get_number_from_string)
             )
     number_of_bad_marks = Field()
     answer_content = Field(
@@ -63,7 +72,7 @@ class YahooAnswer(Item):
             )
 
 def get_answers_number(x):
-    return x.strip(' ()').split(' ')[-1]
+    return int(x.strip(' ()').split(' ')[-1])
 
 class YahooQuestion(Item):
     question_id = Field(
@@ -81,10 +90,10 @@ class YahooQuestion(Item):
             )
     number_of_answers = Field(
             input_processor = MapCompose(remove_entities, get_answers_number),
-            output_processor = Join()
+            output_processor = TakeFirst()
             )
     number_of_interesting_marks = Field(
-            output_processor = Join()
+            output_processor = Compose(Join(), get_number_from_string)
             )
     status = Field(
             input_processor=MapCompose(remove_entities, unicode.strip),

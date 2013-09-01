@@ -36,9 +36,11 @@ class YahooExportPipeline(object):
 
     def process_item(self, item, spider):
         if type(item) is YahooQuestion:
-            print 'question'
+            # print item['number_of_interesting_marks']
+            # print item['number_of_answers']
             self.exporter['question'].export_item(item)
         elif type(item) is YahooAnswer:
-            print 'answer'
+            # print 'answer'
+            # print item['number_of_good_marks']
             self.exporter['answer'].export_item(item)
         return item
