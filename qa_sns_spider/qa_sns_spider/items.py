@@ -117,3 +117,48 @@ class YahooQuestion(Item):
             input_processor = MapCompose(filter_home)
             )
 
+class LazyTweetQuestion(Item):
+    question_id = Field(
+            input_processor = MapCompose(lambda x: int(x)),
+            output_processor = TakeFirst()
+            )
+    question_content = Field(
+            input_processor=MapCompose(remove_entities, unicode.strip),
+            output_processor = Join()
+            )
+    question_tags = Field()
+    asking_date = Field()
+    asker = Field(
+            output_processor = TakeFirst()
+            )
+    number_of_answers = Field(
+            input_processor = MapCompose(remove_entities, unicode.strip, \
+                    lambda x: int(x.split(' ')[0])),
+            output_processor = TakeFirst()
+            )
+
+class LazyTweetAnswer(Item):
+    question_id = Field(
+            input_processor = MapCompose(lambda x: int(x)),
+            output_processor = TakeFirst()
+            )
+    answer_content = Field(
+            input_processor=MapCompose(remove_entities, unicode.strip),
+            output_processor = Join()
+            )
+    answerer = Field(
+            output_processor = TakeFirst()
+            )
+    answer_id = Field()
+
+class LazyTweetUser(Item):
+    user_id = Field()
+    user_url = Field()
+    twitter_username = Field(
+            input_processor = MapCompose(remove_entities, unicode.strip),
+            output_processor = Join()
+            )
+    twitter_url = Field(
+            input_processor = MapCompose(remove_entities, unicode.strip),
+            output_processor = Join()
+            )

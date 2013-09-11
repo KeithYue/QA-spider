@@ -19,9 +19,25 @@ The first step is to combine the user data between SNS and Q&A system
 
 == Development Log ==
 
-=== 2013.8.31 ===
+=== Things need to be done ===
+* link Yahoo Answers data with twitter
+* crawl the data from LazyTweet
+* add category data for Yahoo Answer (set follow = True and callback together)
+
+=== Open Topics ===
+* different pipelines for different spiders: http://stackoverflow.com/questions/8372703/how-can-i-use-different-pipelines-for-different-spiders-in-a-single-scrapy-proje
+
+=== 2013.9.10 ===
+* different spider, different pipeline, different file(based on their spider names)
+* Refactor pipeline.py
+
+=== 2013.9.3 ===
+* 
+
+=== 2013.9.2 ===
 * change some file to integer
     * number of marks
+ 
 === 2013.8.31 ===
 * refresh the question item
     * add the category into the question_loader

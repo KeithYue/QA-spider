@@ -5,6 +5,9 @@
 
 from scrapy.contrib.exporter import JsonLinesItemExporter
 from qa_sns_spider.items import YahooAnswer, YahooUser, YahooQuestion
+from qa_sns_spider.spiders.lazytweet import LazytweetSpider
+from qa_sns_spider.spiders.yahoo_answer import YahooSpider
+
 class QaSnsSpiderPipeline(object):
     def process_item(self, item, spider):
         return item
@@ -15,11 +18,23 @@ class YahooExportPipeline(object):
 #different item is dispatched to different files
         self.files = {}
         self.exporter = {}
+        print 'pipeline init'
 
     def open_spider(self, spider):
         print 'open spider'
-        self.files['question'] = open('question.json','w+b')
-        self.files['answer'] = open('answer.json', 'w+b')
+
+        self.files['question'] = open(''.join([
+            spider.name,
+            '_questions',
+            '.json'
+            ]), 'a+b')
+
+        self.files['answer'] = open(''.join([
+            spider.name,
+            '_answers',
+            '.json'
+            ]), 'a+b')
+
         self.exporter['question'] = JsonLinesItemExporter(self.files['question'])
         self.exporter['answer'] = JsonLinesItemExporter(self.files['answer'])
         for exporter in self.exporter.itervalues():
@@ -35,12 +50,11 @@ class YahooExportPipeline(object):
         self.files.clear()
 
     def process_item(self, item, spider):
-        if type(item) is YahooQuestion:
-            # print item['number_of_interesting_marks']
-            # print item['number_of_answers']
+        # print type(spider), isinstance(spider, LazytweetSpider)
+        # print item.__class__.__name__
+        if item.__class__.__name__.lower().find('question') != -1:
             self.exporter['question'].export_item(item)
-        elif type(item) is YahooAnswer:
-            # print 'answer'
-            # print item['number_of_good_marks']
+        else:
             self.exporter['answer'].export_item(item)
+
         return item

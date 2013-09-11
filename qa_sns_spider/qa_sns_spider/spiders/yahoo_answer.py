@@ -18,7 +18,7 @@ class YahooSpider(CrawlSpider):
             'http://answers.yahoo.com/dir/index',
             ]
     rules = (
-            Rule(SgmlLinkExtractor(allow = (r'http://answers\.yahoo\.com/dir/index\?(sid=\d+)',), unique = True)),
+            Rule(SgmlLinkExtractor(allow = (r'http://answers\.yahoo\.com/dir/index\?(sid=\d+)',), unique = True), follow = True, callback = 'parse_category_page'),
             Rule(SgmlLinkExtractor(allow = (r'http://answers\.yahoo\.com/question/index\?(qid=.+)'), unique = True), callback = 'parse_question_page'),
         )
 
@@ -26,6 +26,10 @@ class YahooSpider(CrawlSpider):
     answer_xpath = '//div[@id="yan-answers"]'
     best_answer_xpath = '//div[@class="answer best"]'
     category_xpath = '//ol[@id="yan-breadcrumbs"]'
+
+    def parse_category_page(self, response):
+        # print 'This is categoty page'
+        return
 
     def parse_question_page(self,response):
         hxs = HtmlXPathSelector(response)
@@ -127,7 +131,7 @@ class YahooSpider(CrawlSpider):
             ]))
 # get the good number ot bad number
         marks = answer_loader.get_output_value('marks')
-        print marks
+        # print marks
         if marks.find('good'):
             answer_loader.add_value('number_of_good_marks', marks.split(' ')[0])
 #bad numbers
