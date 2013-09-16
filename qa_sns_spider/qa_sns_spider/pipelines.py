@@ -24,12 +24,14 @@ class YahooExportPipeline(object):
         print 'open spider'
 
         self.files['question'] = open(''.join([
+            'data/',
             spider.name,
             '_questions',
             '.json'
             ]), 'a+b')
 
         self.files['answer'] = open(''.join([
+            'data/',
             spider.name,
             '_answers',
             '.json'
