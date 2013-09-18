@@ -68,6 +68,7 @@ class LazytweetSpider(CrawlSpider):
             './/span[@class="post-body"]',
             '//span[@class="post-status"]/text()'
             ]))
+        # not useful
         question_loader.add_xpath('question_tags', ''.join([
             './/div[@id="post-tags"]//ul/li/a/text()'
             ]))

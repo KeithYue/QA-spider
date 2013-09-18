@@ -36,3 +36,32 @@ nosetests.xml
 
 *.json
 *.log
+
+# latex files
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+*.txt
+
+# workload file
+qa_sns_spider/crawls/*
