@@ -12,6 +12,7 @@ class QaSnsSpiderPipeline(object):
     def process_item(self, item, spider):
         return item
 
+
 class YahooExportPipeline(object):
 
     def __init__(self):
@@ -56,7 +57,9 @@ class YahooExportPipeline(object):
         # print item.__class__.__name__
         if item.__class__.__name__.lower().find('question') != -1:
             self.exporter['question'].export_item(item)
-        else:
+        elif item.__class__.__name__.lower().find('answer') != -1:
             self.exporter['answer'].export_item(item)
+        else:
+            pass
 
         return item

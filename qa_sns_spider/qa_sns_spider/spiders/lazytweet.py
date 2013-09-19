@@ -70,7 +70,7 @@ class LazytweetSpider(CrawlSpider):
             ]))
         # not useful
         question_loader.add_xpath('question_tags', ''.join([
-            './/div[@id="post-tags"]//ul/li/a/text()'
+            '//*[@id="post-tags"]/ul/li/a/text()'
             ]))
         question_loader.add_xpath('asking_date', ''.join([
             './/span[@class="post-meta"]//span[@class="timestamp"]/text()'
@@ -83,5 +83,5 @@ class LazytweetSpider(CrawlSpider):
             '//a[last()]/text()'
             ]))
         question_loader.add_value('question_id', response.url.split('/')[-1])
-        # print question_loader.get_output_value('question_id')
+        print question_loader.get_output_value('question_tags')
         return question_loader.load_item()
