@@ -65,3 +65,4 @@ nosetests.xml
 
 # workload file
 qa_sns_spider/crawls/*
+qa_sns_spider/data/*
