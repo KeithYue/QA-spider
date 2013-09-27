@@ -22,6 +22,7 @@ The first step is to combine the user data between SNS and Q&A system
 ### Things need to be done 
 * [ ] Improve the twitter-tool set to crawl Quora dataset.
 * [ ] find another dataset besides Lazytweets.
+* [ ] markup the best answer of Lazytweets mannually.
 * [ ] Would use java in the future, build the java development environment.
 * [ ] Learn about `Information Retrival`
 * [ ] Maybe find a RA Job in the next year

@@ -14,8 +14,8 @@ from twitter.auth import NoAuth
 from twitter.util import Fail, err, expand_line, parse_host_list
 from twitter.follow import lookup
 
-CONSUMER_KEY='d8hIyfzs7ievqeeZLjZrqQ'
-CONSUMER_SECRET='AnZmK0rnvaX7BoJ75l6XlilnbyMv7FoiDXWVmPD8'
+CONSUMER_KEY='XLVBlYhYqJNAPPD5OEQ'
+CONSUMER_SECRET='EUDfuBcgB37Dn34Vo6tSaKcBKQESQOW1M6PIMQ'
 oauth_filename = (os.getenv("HOME", "") + os.sep
                   + ".twitter-archiver_oauth")
 # if not os.path.exists(oauth_filename):

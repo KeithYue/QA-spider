@@ -230,11 +230,6 @@ def main(args=sys.argv[1:]):
     for user in options['extra_args']:
         user_ids, users = [], {}
         user_id = twitter.users.lookup(screen_name=user)[0]['id']
-        print(''.join([
-            '%d' % user_id,
-            '\t',
-            '#following users'
-            ]))
         try:
             user_ids = follow(twitter, user, options['followers'])
             users = lookup(twitter, user_ids)
@@ -242,6 +237,11 @@ def main(args=sys.argv[1:]):
             err()
             err("Interrupted.")
             raise SystemExit(1)
+        print(''.join([
+            '%d' % user_id,
+            '\t',
+            '%d' % len(user_ids)
+            ]))
 
         for uid in user_ids:
             if options['show_id']:
