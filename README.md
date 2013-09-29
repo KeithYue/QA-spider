@@ -41,6 +41,12 @@ The first step is to combine the user data between SNS and Q&A system
 ### Open Topics 
 * different pipelines for different spiders: http://stackoverflow.com/questions/8372703/how-can-i-use-different-pipelines-for-different-spiders-in-a-single-scrapy-proje
 
+### 2013.9.29
+* use multiple authentication keys and tokens(divide the data file into several parts).
+* add four users in archeever and three users in follow.py
+* can break the api rate limit but the scrawling speed is still not fast enough
+* by pausing and resuming the process we can change the crawling script in a more dynamic way
+
 ### 2013.9.10 
 * different spider, different pipeline, different file(based on their spider names)
 * Refactor pipeline.py
