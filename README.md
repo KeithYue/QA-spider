@@ -20,11 +20,14 @@ The first step is to combine the user data between SNS and Q&A system
 ## Development Log 
 
 ### Things need to be done 
-* [X] Improve the twitter-tool set to crawl Quora dataset.
+* [o] Improve the twitter-tool set to crawl Quora dataset.
     * [X] Twitter Streaming API only gets the data after the connecttion, which means it is more suitable for apps that wants to be notified when something happens. API cannot retrival the data of past time. This way is blocked.
-    * [ ] try request ajax(PlantomJS?).
-    * [ ] filter the question whose numbers of answers is above 0.
-    * [ ] use multiple authentication keys and tokens(divide the data file into several parts).
+    * [ ] try request ajax(PlantomJS?). Have not try
+    * [X] filter the question whose numbers of answers is above 0.
+    * [o] use multiple authentication keys and tokens(divide the data file into several parts).
+        * [X] add four users in archeever and three users in follow.py
+        * [ ] can break the api rate limit but the scrawling speed is still not fast enough
+        * [X] by pausing and resuming the process we can change the crawling script in a more dynamic way
 * [ ] find another dataset besides Lazytweets.
 * [ ] markup the best answer of Lazytweets mannually.
 * [ ] Would use java in the future, build the java development environment.
