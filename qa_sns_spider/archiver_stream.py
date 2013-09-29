@@ -55,15 +55,7 @@ from twitter.auth import NoAuth
 from twitter.util import Fail, err, expand_line, parse_host_list
 from twitter.follow import lookup
 from twitter.timezones import utc as UTC, Local
-import json
-import random
-
-def get_auths_data():
-    auth_file = open('./auth_users.json', 'r')
-    auth_users = []
-    for auther in auth_file.readlines():
-        auth_users.append(auther.strip().split(r' '))
-    return auth_users
+from twitter.stream import TwitterStream
 
 def parse_args(args, options):
     """Parse arguments from command-line to set options."""
@@ -339,21 +331,19 @@ def main(args=sys.argv[1:]):
 
     # authenticate using OAuth, asking for token if necessary
     if options['oauth']:
-        # oauth_filename = (os.getenv("HOME", "") + os.sep
-        #                   + ".twitter-archiver_oauth")
-        # if not os.path.exists(oauth_filename):
-        #     oauth_dance("Twitter-Archiver", CONSUMER_KEY, CONSUMER_SECRET,
-        #                 oauth_filename)
-        # oauth_token, oauth_token_secret = read_token_file(oauth_filename)
-        auths = get_auths_data()
-        random_index = random.randint(0, len(auths) - 1)
-        print(random_index)
-        auth = OAuth(auths[random_index][0], auths[random_index][1], CONSUMER_KEY,
+        oauth_filename = (os.getenv("HOME", "") + os.sep
+                          + ".twitter-archiver_oauth")
+        if not os.path.exists(oauth_filename):
+            oauth_dance("Twitter-Archiver", CONSUMER_KEY, CONSUMER_SECRET,
+                        oauth_filename)
+        oauth_token, oauth_token_secret = read_token_file(oauth_filename)
+        auth = OAuth(oauth_token, oauth_token_secret, CONSUMER_KEY,
                      CONSUMER_SECRET)
     else:
         auth = NoAuth()
 
     twitter = Twitter(auth=auth, api_version='1.1', domain='api.twitter.com')
+    twitter_stream = TwitterStream(auth, api_version='1.1')
 
     if options['api-rate']:
         rate_limit_status(twitter)
@@ -394,7 +384,7 @@ def main(args=sys.argv[1:]):
         new = 0
         before = len(tweets)
         try:
-            statuses(twitter, user, tweets, options['mentions'], options['favorites'], isoformat=options['isoformat'])
+            statuses(twitter_stream, user, tweets, options['mentions'], options['favorites'], isoformat=options['isoformat'])
         except KeyboardInterrupt:
             err()
             err("Interrupted")
