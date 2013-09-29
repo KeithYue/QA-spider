@@ -59,7 +59,7 @@ import json
 import random
 
 def get_auths_data():
-    auth_file = open('./auth_users.json', 'r')
+    auth_file = open('./auth_users', 'r')
     auth_users = []
     for auther in auth_file.readlines():
         auth_users.append(auther.strip().split(r' '))
