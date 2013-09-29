@@ -40,6 +40,15 @@ from twitter.oauth_dance import oauth_dance
 from twitter.auth import NoAuth
 from twitter.util import Fail, err
 
+import json
+import random
+
+def get_auths_data():
+    auth_file = open('./auth_users_follow', 'r')
+    auth_users = []
+    for auther in auth_file.readlines():
+        auth_users.append(auther.strip().split(r' '))
+    return auth_users
 
 def parse_args(args, options):
     """Parse arguments from command-line to set options."""
@@ -209,13 +218,16 @@ def main(args=sys.argv[1:]):
 
     # authenticate using OAuth, asking for token if necessary
     if options['oauth']:
-        oauth_filename = (os.getenv("HOME", "") + os.sep
-                          + ".twitter-follow_oauth")
-        if not os.path.exists(oauth_filename):
-            oauth_dance("Twitter-Follow", CONSUMER_KEY, CONSUMER_SECRET,
-                        oauth_filename)
-        oauth_token, oauth_token_secret = read_token_file(oauth_filename)
-        auth = OAuth(oauth_token, oauth_token_secret, CONSUMER_KEY,
+        # oauth_filename = (os.getenv("HOME", "") + os.sep
+        #                   + ".twitter-follow_oauth")
+        # if not os.path.exists(oauth_filename):
+        #     oauth_dance("Twitter-Follow", CONSUMER_KEY, CONSUMER_SECRET,
+        #                 oauth_filename)
+        # oauth_token, oauth_token_secret = read_token_file(oauth_filename)
+        auths = get_auths_data()
+        random_index = random.randint(0, len(auths) - 1)
+        print('Using the number %d oauth user' % random_index)
+        auth = OAuth(auths[random_index][0], auths[random_index][1], CONSUMER_KEY,
                      CONSUMER_SECRET)
     else:
         auth = NoAuth()
