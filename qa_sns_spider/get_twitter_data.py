@@ -39,5 +39,5 @@ for line in json_file.readlines():
         twitter_name = item['asker']['twitter_username']
     if item.has_key('answerer'):
         twitter_name  = item['answerer']['twitter_username']
-    os.system('./archiver.py -o %s -s %s' % (twitter_name, './data/tweets/'))
+    os.system('./archiver_beta1.py -o %s -s %s' % (twitter_name, './data/tweets/'))
     os.system('./follow.py -o -g -i %s > ./data/twitter-follow/%s' % (twitter_name, twitter_name))
