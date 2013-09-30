@@ -226,7 +226,7 @@ def main(args=sys.argv[1:]):
         # oauth_token, oauth_token_secret = read_token_file(oauth_filename)
         auths = get_auths_data()
         random_index = random.randint(0, len(auths) - 1)
-        print('Using the number %d oauth user' % random_index)
+        err('Using the number %d oauth user' % random_index)
         auth = OAuth(auths[random_index][0], auths[random_index][1], CONSUMER_KEY,
                      CONSUMER_SECRET)
     else:
