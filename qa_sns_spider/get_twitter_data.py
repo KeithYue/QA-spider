@@ -43,11 +43,15 @@ def main():
         os.system('./archiver_beta1.py -o %s -s %s' % (twitter_name, './data/tweets/'))
         if twitter_name not in os.listdir('./data/twitter-follow/'):
             os.system('./follow.py -o -g -i %s > ./data/twitter-follow/%s' % (twitter_name, twitter_name))
+        else:
+            print '%s\'s following information  has already been archieved!!' % twitter_name
 
 def test():
     twitter_name = argv[1]
     os.system('./archiver_beta1.py -o %s -s %s' % (twitter_name, './data/tweets/'))
     if twitter_name not in os.listdir('./data/twitter-follow/'):
         os.system('./follow.py -o -g -i %s > ./data/twitter-follow/%s' % (twitter_name, twitter_name))
+    else:
+        print '%s\'s following information  has already been archieved!!' % twitter_name
 
 main()
