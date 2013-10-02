@@ -35,9 +35,10 @@ def write_answers(answers):
        answer_file_output.write('\n')
 
 def main():
+    question_number = 0
     for question_json in questions_file.readlines():
         question = json.loads(question_json)
-        print 'Question: '
+        print 'Question(%d/%d): ' % (question_number, 6851)
         print question['question_content'].encode('utf-8')
         answers = get_answers(question['question_id'])
         print '%d answers' % len(answers)
@@ -55,6 +56,7 @@ def main():
             set_best_answer(answers[best_answer_index])
 # write to file
         write_answers(answers)
+        question_number += 1
         print '-'*30
 
 # close files
