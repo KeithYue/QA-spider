@@ -17,7 +17,7 @@ The first step is to combine the user data between SNS and Q&A system
 * Quara
 * Baidu Zhidao
 
-## Development Log 
+
 
 ### Things need to be done 
 * [o] Improve the twitter-tool set to crawl Quora dataset.
@@ -40,6 +40,12 @@ The first step is to combine the user data between SNS and Q&A system
 
 ### Open Topics 
 * different pipelines for different spiders: http://stackoverflow.com/questions/8372703/how-can-i-use-different-pipelines-for-different-spiders-in-a-single-scrapy-proje
+
+## Development Log 
+
+### 2013.10.2
+* set up the script of marking the best answer of lazytweet.
+* Has crawled the whole twitter data of lazytweets(Including tweets and following information)
 
 ### 2013.9.29
 * use multiple authentication keys and tokens(divide the data file into several parts).
