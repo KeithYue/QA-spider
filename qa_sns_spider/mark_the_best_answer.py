@@ -49,7 +49,8 @@ def main():
 
 # if a question has only one answer, then it is the best answer
         if(len(answers) == 1):
-            best_answer_index = 0
+            # if a question has only one answer, then there is no need to mark the best answer
+            best_answer_index = -1
         else:
             best_answer_index  = input('Please input best answer number: ')
         if best_answer_index != -1:

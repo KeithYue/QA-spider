@@ -20,6 +20,7 @@ The first step is to combine the user data between SNS and Q&A system
 
 
 ### Things need to be done 
+* let the script of getting twitter data support multi-process run(make it faster)
 * [o] Improve the twitter-tool set to crawl Quora dataset.
     * [X] Twitter Streaming API only gets the data after the connecttion, which means it is more suitable for apps that wants to be notified when something happens. API cannot retrival the data of past time. This way is blocked.
     * [ ] try request ajax(PlantomJS?). Have not try
@@ -43,6 +44,9 @@ The first step is to combine the user data between SNS and Q&A system
 
 ## Development Log 
 
+### 2013.10.3
+* Write to extract quora link to get user data(link file)
+ 
 ### 2013.10.2
 * set up the script of marking the best answer of lazytweet.
 * Has crawled the whole twitter data of lazytweets(Including tweets and following information)
