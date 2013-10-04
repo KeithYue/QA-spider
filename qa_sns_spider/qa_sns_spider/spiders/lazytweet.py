@@ -55,10 +55,11 @@ class LazytweetSpider(CrawlSpider):
             ]))))
         answer_loader.add_xpath('answer_content',''.join([
             './/span[@class="answer-body"]',
-            '//span[@class="answer-status"]/text()'
+            '//span[@class="answer-status"]//descendant-or-self::text()'
             ]))
+        print answer_loader.get_output_value('answer_content')
+        a = input()
         return answer_loader.load_item()
-        # print answer_loader.get_output_value('answer_content')
 
     def get_question(self, selector, response):
 # both select function and selector's join function need to add dot to search from relative based directory
@@ -66,7 +67,7 @@ class LazytweetSpider(CrawlSpider):
                 selector = selector)
         question_loader.add_xpath('question_content', ''.join([
             './/span[@class="post-body"]',
-            '//span[@class="post-status"]/text()'
+            '//span[@class="post-status"]/descendant-or-self::text()'
             ]))
         # not useful
         question_loader.add_xpath('question_tags', ''.join([
