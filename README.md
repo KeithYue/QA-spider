@@ -21,8 +21,9 @@ The first step is to combine the user data between SNS and Q&A system
 
 ### Things need to be done 
 * [ ] let the script of getting twitter data support multi-process run(make it faster)
-* [ ] mar the best answer
+* [ ] mark the best answer
 * [ ] change develop environment to Java
+* [ ] crawl the data from: http://www.brianbondy.com/stackexchange-twitter/stackoverflow/
 * [o] Improve the twitter-tool set to crawl Quora dataset.
     * [X] Twitter Streaming API only gets the data after the connecttion, which means it is more suitable for apps that wants to be notified when something happens. API cannot retrival the data of past time. This way is blocked.
     * [ ] try request ajax(PlantomJS?). Have not try

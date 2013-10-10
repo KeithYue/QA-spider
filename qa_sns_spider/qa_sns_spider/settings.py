@@ -12,8 +12,8 @@ SPIDER_MODULES = ['qa_sns_spider.spiders']
 NEWSPIDER_MODULE = 'qa_sns_spider.spiders'
 # LOG_FILE = 'yahoo.log'
 ITEM_PIPELINES = [
-        'qa_sns_spider.pipelines.YahooExportPipeline',
         ]
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'qa_sns_spider (+http://www.yourdomain.com)'
+DOWNLOAD_DELAY =  0.35

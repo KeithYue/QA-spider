@@ -162,3 +162,56 @@ class LazyTweetUser(Item):
             input_processor = MapCompose(remove_entities, unicode.strip),
             output_processor = Join()
             )
+
+def get_the_last_name(x):
+    if len(x) != 0:
+        return x[-1]
+
+class StackOverflowUser(Item):
+    user_id = Field(
+            output_processor  = TakeFirst()
+            )
+    user_name = Field(
+            output_processor = Compose(get_the_last_name) # get the last name
+            ) # stackoverflow user name
+    user_link = Field(
+            output_processor = Compose(get_the_last_name) # get the owner link
+            ) # link of user in stackoverflow
+
+class StackOverflowQuestion(Item):
+    question_id = Field(
+            input_processor = MapCompose(lambda x: int(x)),
+            output_processor = TakeFirst()
+            )
+    question_title = Field()
+    question_content = Field(
+            input_processor = MapCompose(remove_entities, unicode.strip),
+            output_processor = Join()
+            )
+    asker = Field()
+    number_of_answers =  Field(
+            output_processor = TakeFirst()
+            )
+    question_tags = Field()
+    marks = Field(
+            input_processor = MapCompose(lambda x: int(x)),
+            output_processor = TakeFirst()
+            )
+
+class StackOverflowAnswer(Item):
+    answer_id = Field(
+            input_processor = MapCompose(lambda x: int(x)),
+            output_processor = TakeFirst()
+            )
+    answer_content = Field(
+            input_processor = MapCompose(remove_entities, unicode.strip),
+            output_processor = Join()
+            )
+    answerer = Field()
+    marks = Field(
+            input_processor = MapCompose(lambda x: int(x)),
+            output_processor = TakeFirst()
+            )
+    is_best_answer = Field(
+            output_processor = TakeFirst()
+            )
