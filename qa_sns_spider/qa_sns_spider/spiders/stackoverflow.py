@@ -35,10 +35,10 @@ class StackoverflowSpider(CrawlSpider):
         # print 'I am parsing question'
         hxs = HtmlXPathSelector(response)
         for question_selector in hxs.select(self.question_xpath):
-            self.get_question(question_selector, response)
+            yield self.get_question(question_selector, response)
 
         for answer_selector in hxs.select(self.answers_xpath):
-            self.get_answer(answer_selector, response)
+            yield self.get_answer(answer_selector, response)
 
 
     # label can be 'question' or 'answer'
@@ -53,12 +53,13 @@ class StackoverflowSpider(CrawlSpider):
             './/div[contains(@class, "user-details")]',
             '/a/@href'
             ]))
-        user_loader.add_value('user_id',
-                user_loader.get_output_value('user_link'))
 
-        # print user_loader.get_output_value('user_id')
+        if user_loader.get_output_value('user_link'):
+            user_id = user_loader.get_output_value('user_link')
+            user_loader.add_value('user_id',
+                    user_loader.get_output_value('user_link'))
 
-        return
+        return user_loader.load_item()
 
     def get_question(self, selector, response):
         hxs = HtmlXPathSelector(response)
@@ -88,9 +89,14 @@ class StackoverflowSpider(CrawlSpider):
         question_loader.add_value('number_of_answers',
                 int(number_of_answers[0].strip().split(' ')[0]))
 
-        print question_loader.get_output_value('number_of_answers')
+        question_title = hxs.select(''.join([
+            '//div[contains(@id, "question-header")]',
+            '//a[contains(@class, "question-hyperlink")]/text()'
+            ])).extract()
+        question_loader.add_value('question_title', question_title)
+        # print  question_loader.get_output_value('question_title')
 
-        return
+        return question_loader.load_item()
 
     def get_answer(self, selector, response):
         answer_loader = XPathItemLoader(item = StackOverflowAnswer(),
@@ -113,6 +119,5 @@ class StackoverflowSpider(CrawlSpider):
         # get user name
         answer_loader.add_value('answerer', self.get_user(selector, response, 'answer'))
 
-        # print answer_loader.get_output_value('marks')
+        return answer_loader.load_item()
 
-        return

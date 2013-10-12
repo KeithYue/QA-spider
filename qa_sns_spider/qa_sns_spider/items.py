@@ -183,12 +183,17 @@ class StackOverflowQuestion(Item):
             input_processor = MapCompose(lambda x: int(x)),
             output_processor = TakeFirst()
             )
-    question_title = Field()
+    question_title = Field(
+            input_processor = MapCompose(remove_entities, unicode.strip),
+            output_processor = Join()
+            )
     question_content = Field(
             input_processor = MapCompose(remove_entities, unicode.strip),
             output_processor = Join()
             )
-    asker = Field()
+    asker = Field(
+            output_processor = TakeFirst()
+            )
     number_of_answers =  Field(
             output_processor = TakeFirst()
             )
@@ -207,7 +212,9 @@ class StackOverflowAnswer(Item):
             input_processor = MapCompose(remove_entities, unicode.strip),
             output_processor = Join()
             )
-    answerer = Field()
+    answerer = Field(
+            output_processor = TakeFirst()
+            )
     marks = Field(
             input_processor = MapCompose(lambda x: int(x)),
             output_processor = TakeFirst()
