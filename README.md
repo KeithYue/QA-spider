@@ -21,6 +21,10 @@ The first step is to combine the user data between SNS and Q&A system
 
 ### Things need to be done 
 * [ ] let the script of getting twitter data support multi-process run(make it faster)
+    * [ ] add twitter user accounts and oauth the application
+        *  qaspider[1-20]@126.com
+        * twitter-user-name: qaspider1, qspider2, qaspider3, qaspider4, qaspider5
+    * [ ] multi-thread process
 * [ ] mark the best answer
 * [ ] change develop environment to Java
 * [ ] crawl the data from: http://www.brianbondy.com/stackexchange-twitter/stackoverflow/

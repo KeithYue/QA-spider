@@ -63,6 +63,7 @@ def get_auths_data():
     auth_users = []
     for auther in auth_file.readlines():
         auth_users.append(auther.strip().split(r' '))
+    auth_file.close()
     return auth_users
 
 def parse_args(args, options):
