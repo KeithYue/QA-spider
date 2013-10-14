@@ -47,6 +47,7 @@ except ImportError:
 # T-Archiver (Twitter-Archiver) application registered by @stalkr_
 CONSUMER_KEY='d8hIyfzs7ievqeeZLjZrqQ'
 CONSUMER_SECRET='AnZmK0rnvaX7BoJ75l6XlilnbyMv7FoiDXWVmPD8'
+format_text = None
 
 from twitter.api import Twitter, TwitterError
 from twitter.oauth import OAuth, read_token_file
@@ -414,3 +415,4 @@ def main(args=sys.argv[1:]):
 if __name__ == '__main__':
     main()
 
+format_text = direct_format_text
