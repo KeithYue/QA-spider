@@ -47,7 +47,7 @@ class FollowingSpider(Thread):
 
         for uid in user_ids:
           try:
-              follow_file.write('%s\t%s' % (str(uid), users[uid].encode("utf-8")))
+              follow_file.write('%s\t%s\n' % (str(uid), users[uid].encode("utf-8")))
               # print(str(uid) + "\t" + users[uid].encode("utf-8"))
           except KeyError:
               pass
