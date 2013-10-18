@@ -51,6 +51,7 @@ class FollowingSpider(Thread):
               # print(str(uid) + "\t" + users[uid].encode("utf-8"))
           except KeyError:
               pass
+        follow_file.close()
 
 def get_following_data(thread_number = 5):
     total_number = len(users_list)
