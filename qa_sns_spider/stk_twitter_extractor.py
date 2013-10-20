@@ -12,6 +12,7 @@ from get_following_multi_thread import FollowingSpider
 # argv[1]: stack_over_flow file name
 answer_file = open('./data/stackoverflow_answers.json', 'r')
 stk_twitter_link_file = open('./data/stk_twitter_link', 'w')
+count = 0
 for line in answer_file.xreadlines():
     answer = json.loads(line.strip())
     answerer = answer['answerer']
@@ -44,6 +45,8 @@ for line in answer_file.xreadlines():
                 '\n'
                 ]))
             stk_twitter_link_file.flush()
+            count += 1
+            print 'I hava found %d twitter&stk link !!' % count
             # crawl the tweets
             ts = TwitterSpider(twitter_url.split('/')[-1])
             ts.start()
