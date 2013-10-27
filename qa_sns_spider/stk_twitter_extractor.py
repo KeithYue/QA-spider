@@ -23,36 +23,39 @@ for line in answer_file.xreadlines():
             'http://stackoverflow.com',
             answerer['user_link']
             ])
-        soup = BeautifulSoup(urllib2.urlopen(profile_url))
-        twitter_link = None
-        if soup.find_all(href = re.compile('twitter')):
-            twitter_link = soup.find_all(href = re.compile('twitter'))[0]
-            twitter_url = twitter_link['href']
-            twitter_user_name = unicode(twitter_link.string)
-            stk_user_name = answerer.get('user_name')
-            stk_user_id = int(answerer.get('user_id').split('/')[2])
-            link_obj = {
-                    'twitter_name': twitter_user_name,
-                    'twitter_url': twitter_url,
-                    'stk_user_name': stk_user_name,
-                    'stk_user_id': stk_user_id
-                    }
-            # write this link to file
-            json_link_obj = json.dumps(link_obj)
-            print json_link_obj
-            stk_twitter_link_file.write(''.join([
-                json_link_obj,
-                '\n'
-                ]))
-            stk_twitter_link_file.flush()
-            count += 1
-            print 'I hava found %d twitter&stk link !!' % count
-            # crawl the tweets
-            ts = TwitterSpider(twitter_url.split('/')[-1])
-            ts.start()
-            # crawl the following information
-            fs = FollowingSpider(twitter_url.split('/')[-1])
-            fs.start()
+        try:
+            soup = BeautifulSoup(urllib2.urlopen(profile_url))
+            twitter_link = None
+            if soup.find_all(href = re.compile('twitter')):
+                twitter_link = soup.find_all(href = re.compile('twitter'))[0]
+                twitter_url = twitter_link['href']
+                twitter_user_name = unicode(twitter_link.string)
+                stk_user_name = answerer.get('user_name')
+                stk_user_id = int(answerer.get('user_id').split('/')[2])
+                link_obj = {
+                        'twitter_name': twitter_user_name,
+                        'twitter_url': twitter_url,
+                        'stk_user_name': stk_user_name,
+                        'stk_user_id': stk_user_id
+                        }
+                # write this link to file
+                json_link_obj = json.dumps(link_obj)
+                print json_link_obj
+                stk_twitter_link_file.write(''.join([
+                    json_link_obj,
+                    '\n'
+                    ]))
+                stk_twitter_link_file.flush()
+                count += 1
+                print 'I hava found %d twitter&stk link !!' % count
+                # crawl the tweets
+                ts = TwitterSpider(twitter_url.split('/')[-1])
+                ts.start()
+                # crawl the following information
+                fs = FollowingSpider(twitter_url.split('/')[-1])
+                fs.start()
+        except e:
+            print e
 
 stk_twitter_link_file.close()
 
