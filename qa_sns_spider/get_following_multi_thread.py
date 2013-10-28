@@ -4,6 +4,7 @@ import os
 import json
 
 
+
 def load_auths():
     auth_file = open('./auth_users_follow', 'r')
     auth_users = []

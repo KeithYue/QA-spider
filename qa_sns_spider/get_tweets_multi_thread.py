@@ -2,6 +2,7 @@ from threading import Thread, Lock
 from archiver_beta1 import *
 import os
 import json
+from get_following_multi_thread import load_auths
 
 # twitter id of quora with
 quora_id_twitter_file = open('./data/quora_id_twitter', 'w')
@@ -9,6 +10,10 @@ quora_id_twitter_file = open('./data/quora_id_twitter', 'w')
 # T-Archiver (Twitter-Archiver) application registered by @stalkr_
 CONSUMER_KEY = 'd8hIyfzs7ievqeeZLjZrqQ'
 CONSUMER_SECRET = 'AnZmK0rnvaX7BoJ75l6XlilnbyMv7FoiDXWVmPD8'
+
+# T-Follow (Twitter-Follow) application registered by @stalkr_
+FOLLOW_CONSUMER_KEY = 'USRZQfvFFjB6UvZIN2Edww'
+FOLLOW_CONSUMER_SECRET = 'AwGAaSzZa5r0TDL8RKCDtffnI9H9mooZUdOa95nw8'
 
 # global twitter api for test
 test_twitter = Twitter(
@@ -21,9 +26,13 @@ test_twitter = Twitter(
 
 # load auth file
 auth_users = get_auths_data()
+following_auth_users = load_auths()
 auth_pointer = 0
-
+following_auth_pointer = 0
+is_using_archieve = True
 AUTH_LOCK = Lock()
+FOLLOW_AUTH_LOCK = Lock()
+APP_SWITCH = Lock()
 
 # user tweets need to be crawled
 users_list = []
@@ -44,17 +53,35 @@ class TwitterSpider(Thread):
         self.twitter_id = twitter_id
 
     def run(self):
-        global auth_pointer
+# use two application to crawl the data
+        global auth_pointer # pointer of archiever
+        global following_auth_pointer # pointer of following app
+        global is_using_archieve
+        APP_SWITCH.acquire() # get the which app to use
+        if(is_using_archieve): # use twitter archiever
+            AUTH_LOCK.acquire()
+            print 'I am starting, using %d auther' % \
+                    auth_pointer
+            auth = OAuth(auth_users[auth_pointer][0],
+                    auth_users[auth_pointer][1],
+                    CONSUMER_KEY, CONSUMER_SECRET)
+            auth_pointer = (auth_pointer + 1) % len(auth_users)
+            AUTH_LOCK.release()
+            is_using_archieve = False
+        else: # use twitter following
+            FOLLOW_AUTH_LOCK.acquire()
+            print 'I am starting, using %d following auth user' % \
+                    (following_auth_pointer)
+            auth = OAuth(following_auth_users[following_auth_pointer][0],
+                    following_auth_users[following_auth_pointer][1],
+                    FOLLOW_CONSUMER_KEY,
+                    FOLLOW_CONSUMER_SECRET)
+            following_auth_pointer = (following_auth_pointer + 1) % len(following_auth_users)
+            FOLLOW_AUTH_LOCK.release()
+            is_using_archieve = True
+        APP_SWITCH.release()
 
         # lock the auth pointer for distribution
-        AUTH_LOCK.acquire()
-        print 'I am starting, using %d auther' % \
-                auth_pointer
-        auth = OAuth(auth_users[auth_pointer][0],
-                auth_users[auth_pointer][1],
-                CONSUMER_KEY, CONSUMER_SECRET)
-        auth_pointer = (auth_pointer + 1) % len(auth_users)
-        AUTH_LOCK.release()
 
         twitter = Twitter(auth=auth, api_version='1.1',
                 domain='api.twitter.com')
@@ -114,6 +141,7 @@ def get_tweets_from_ids(thread_number = 5):
         for i in range(0, thread_number):
             if index < total_number:
                 thread_list.append(TwitterSpider(twitter_id = user_ids[index]))
+                print 'This number %d user' % index
                 index += 1
         for spider in thread_list:
             spider.start()
@@ -138,5 +166,5 @@ def get_quora_twitter_id():
 if __name__ == '__main__':
     # load_user_list('./data/stack_twitter_link.json')
     user_ids = get_quora_twitter_id()
-    get_tweets_from_ids()
+    get_tweets_from_ids(thread_number = 10)
 
