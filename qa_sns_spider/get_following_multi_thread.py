@@ -4,6 +4,7 @@ import os
 import json
 import Queue
 from archiver_beta1 import get_auths_data as archive_auths
+import time
 
 def load_auths():
     auth_file = open('./auth_users_follow', 'r')
@@ -60,19 +61,25 @@ class FollowingSpider(Thread):
             user_ids, users = [], {}
             try:
                 user_ids = follow(twitter, self.twitter_username , True)
-                users = lookup(twitter, user_ids)
+                # HERE we decide not to retrive screen name because it is time-consuming
+                # users = lookup(twitter, user_ids)
             except KeyboardInterrupt as e:
                 err()
                 err("Interrupted.")
                 raise SystemExit(1)
 
+            follow_file.write('following twitter id\n')
             for uid in user_ids:
               try:
-                  follow_file.write('%s\t%s\n' % (str(uid), users[uid].encode("utf-8")))
+                  # follow_file.write('%s\t%s\n' % (str(uid), users[uid].encode("utf-8")))
+                  follow_file.write('%s\n' % (str(uid)))
                   # print(str(uid) + "\t" + users[uid].encode("utf-8"))
               except KeyError:
                   pass
             follow_file.close()
+
+
+            time.sleep(60) # to avoid the rate limit, 15 request per 15 mins, differ from tweets
 
             self.queue.task_done() # indicate the task is finished
 
@@ -90,6 +97,7 @@ def get_following_data(thread_number = 5):
             spider.start()
         for spider in thread_list:
             spider.join()
+        time.sleep(2)
 
 # multi-thread spiders but using a queue to manage all threads
 def get_following_data_using_queue():
@@ -138,7 +146,7 @@ APP_SWITCH = Lock()
 
 # Use queue to set up deamon theads pool
 
-max_thead_number = 8
+max_thead_number = 60 # every user send request 1/per minute
 thread_queue = Queue.Queue(maxsize = max_thead_number)
 
 if __name__ == '__main__':
