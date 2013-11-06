@@ -80,34 +80,36 @@ def lookup(twitter, user_ids):
         while True:
             try:
                 portion = lookup_portion(twitter, user_ids[i:][:api_limit])
-            except TwitterError as e:
-                if e.e.code == 400:
-                    err("Fail: %i API rate limit exceeded" % e.e.code)
-                    rate = twitter.account.rate_limit_status()
-                    reset = rate['reset_time_in_seconds']
-                    reset = time.asctime(time.localtime(reset))
-                    delay = int(rate['reset_time_in_seconds']
-                                - time.time()) + 5 # avoid race
-                    err("Hourly limit of %i requests reached, next reset on "
-                        "%s: going to sleep for %i secs"
-                        % (rate['hourly_limit'], reset, delay))
-                    fail.wait(delay)
-                    continue
-                elif e.e.code == 502:
-                    err("Fail: %i Service currently unavailable, retrying..."
-                        % e.e.code)
-                else:
-                    err("Fail: %s\nRetrying..." % str(e)[:500])
-                fail.wait(3)
-            except urllib2.URLError as e:
-                err("Fail: urllib2.URLError %s - Retrying..." % str(e))
-                fail.wait(3)
-            except httplib.error as e:
-                err("Fail: httplib.error %s - Retrying..." % str(e))
-                fail.wait(3)
-            except KeyError as e:
-                err("Fail: KeyError %s - Retrying..." % str(e))
-                fail.wait(3)
+           #  except TwitterError as e:
+           #      if e.e.code == 400:
+           #          err("Fail: %i API rate limit exceeded" % e.e.code)
+           #          rate = twitter.account.rate_limit_status()
+           #          reset = rate['reset_time_in_seconds']
+           #          reset = time.asctime(time.localtime(reset))
+           #          delay = int(rate['reset_time_in_seconds']
+           #                      - time.time()) + 5 # avoid race
+           #          err("Hourly limit of %i requests reached, next reset on "
+           #              "%s: going to sleep for %i secs"
+           #              % (rate['hourly_limit'], reset, delay))
+           #          fail.wait(delay)
+           #          continue
+           #      elif e.e.code == 502:
+           #          err("Fail: %i Service currently unavailable, retrying..."
+           #              % e.e.code)
+           #      else:
+           #          err("Fail: %s\nRetrying..." % str(e)[:500])
+           #      fail.wait(3)
+           #  except urllib2.URLError as e:
+           #      err("Fail: urllib2.URLError %s - Retrying..." % str(e))
+           #      fail.wait(3)
+           #  except httplib.error as e:
+           #      err("Fail: httplib.error %s - Retrying..." % str(e))
+           #      fail.wait(3)
+           #  except KeyError as e:
+           #      err("Fail: KeyError %s - Retrying..." % str(e))
+           #      fail.wait(3)
+            except:
+                break
             else:
                 users.update(portion)
                 err("Resolving user ids to screen names: %i/%i"

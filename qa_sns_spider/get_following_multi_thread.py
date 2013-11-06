@@ -79,7 +79,7 @@ class FollowingSpider(Thread):
             follow_file.close()
 
 
-            time.sleep(60) # to avoid the rate limit, 15 request per 15 mins, differ from tweets
+            time.sleep(70) # to avoid the rate limit, 15 request per 15 mins, differ from tweets
 
             self.queue.task_done() # indicate the task is finished
 
@@ -146,7 +146,7 @@ APP_SWITCH = Lock()
 
 # Use queue to set up deamon theads pool
 
-max_thead_number = 60 # every user send request 1/per minute
+max_thead_number = 30  # every user send request 1/per minute
 thread_queue = Queue.Queue(maxsize = max_thead_number)
 
 if __name__ == '__main__':
