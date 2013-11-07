@@ -5,6 +5,7 @@ import json
 import Queue
 from archiver_beta1 import get_auths_data as archive_auths
 import time
+import os
 
 def load_auths():
     auth_file = open('./auth_users_follow', 'r')
@@ -13,6 +14,10 @@ def load_auths():
         auth_users.append(auther.strip().split(r' '))
     auth_file.close()
     return auth_users
+
+def get_followed_users():
+    'return the user list'
+    return os.listdir(''.join([os.curdir,os.sep, 'data',os.sep,'twitter-follow', os.sep]))
 
 
 class FollowingSpider(Thread):
@@ -105,10 +110,11 @@ def get_following_data_using_queue():
     # print total_number
     for i in range(max_thead_number): # start total tasks, the number here is the max-size of threads
         t = FollowingSpider(thread_queue)
-        t.daemon = True
+        t.daemon = Tru
         t.start()
     for index, user in enumerate(users_list):
-        thread_queue.put((index, user))
+        if user not in crawled_users: # dont crawl the crawled users
+            thread_queue.put((index, user))
     thread_queue.join()
 
 
@@ -137,6 +143,7 @@ FOLLOW_CONSUMER_SECRET = 'AwGAaSzZa5r0TDL8RKCDtffnI9H9mooZUdOa95nw8'
 following_auth_users = load_auths()
 archive_auths_users = archive_auths()
 users_list = []
+crawled_users = get_followed_users()
 auth_pointer = 0
 following_auth_pointer = 0
 is_using_archieve = True
@@ -146,7 +153,7 @@ APP_SWITCH = Lock()
 
 # Use queue to set up deamon theads pool
 
-max_thead_number = 60  # every user send request 1/per minute
+max_thead_number = 60 # every user send request 1/per minute
 thread_queue = Queue.Queue(maxsize = max_thead_number)
 
 if __name__ == '__main__':
