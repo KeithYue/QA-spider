@@ -110,7 +110,7 @@ def get_following_data_using_queue():
     # print total_number
     for i in range(max_thead_number): # start total tasks, the number here is the max-size of threads
         t = FollowingSpider(thread_queue)
-        t.daemon = Tru
+        t.daemon = True
         t.start()
     for index, user in enumerate(users_list):
         if user not in crawled_users: # dont crawl the crawled users
