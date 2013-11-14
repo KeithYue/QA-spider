@@ -163,8 +163,16 @@ def get_quora_twitter_id():
         ids.append(twitter_id)
     return ids
 
+def get_common_follow_tweets():
+    ids = []
+    id_files = open("./data/quora_twitter_common_follow", 'r')
+    for line in id_files.readlines()[1:10001]:
+        twitter_id = line.strip().split('\t')[0]
+        ids.append(int(twitter_id))
+    return ids
+
 if __name__ == '__main__':
     # load_user_list('./data/stack_twitter_link.json')
-    user_ids = get_quora_twitter_id()
+    user_ids = get_common_follow_tweets()
     get_tweets_from_ids(thread_number = 10)
 
